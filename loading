@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team VS Manga Screen</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --panel-border: 4px solid #000;
+            --overlay-opacity: 0.6;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* ================= SETUP SECTION ================= */
+        #setup-section {
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        h1 { text-align: center; color: #fff; margin-bottom: 10px; }
+        
+        .teams-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .team-inputs {
+            flex: 1;
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .team-inputs h2 { margin-top: 0; border-bottom: 2px solid #555; padding-bottom: 10px; }
+        .team-inputs.blue h2 { color: #3498db; border-color: #3498db; }
+        .team-inputs.red h2 { color: #e74c3c; border-color: #e74c3c; }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; color: #aaa; }
+        .input-group input[type="text"] {
+            width: 100%; padding: 8px; background: #333; border: 1px solid #555; color: white; border-radius: 4px;
+        }
+        .input-group input[type="file"] {
+            width: 100%; padding: 8px; background: #333; border: 1px solid #555; color: white; border-radius: 4px;
+        }
+
+        .btn-start {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #3498db, #e74c3c);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .btn-start:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+
+        /* ================= PRESENTATION SECTION ================= */
+        #presentation-section {
+            display: none; /* Hidden by default */
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: #000;
+        }
+
+        /* Team Name Display */
+        #team-name-display {
+            position: absolute;
+            top: 5%;
+            font-family: 'Anton', sans-serif;
+            font-size: 5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            z-index: 100;
+            text-shadow: 0 0 10px rgba(0,0,0,0.8), 2px 2px 0px #000;
+            transition: all 0.5s ease;
+        }
+
+        .name-blue { color: #3498db; }
+        .name-red { color: #e74c3c; }
+
+        /* Manga Strip Container */
+        .comic-strip {
+            display: flex;
+            width: 98%;
+            height: 80vh;
+            background: #000;
+            padding: 10px;
+            box-sizing: border-box;
+            gap: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Individual Panel */
+        .panel {
+            flex: 1;
+            position: relative;
+            overflow: hidden; /* Crucial for slot machine effect */
+            background: #111;
+            border: var(--panel-border);
+            border-right: none; /* Overlap borders */
+            margin-right: -4px; /* Pull borders together */
+            z-index: 1;
+        }
+
+        .panel:last-child { border-right: var(--panel-border); margin-right: 0; }
+
+        /* Alternating Shapes (Clip Paths) */
+        /* Top Cut: Slice sa top-right */
+        .panel.top-cut {
+            clip-path: polygon(0% 0%, 85% 0%, 100% 15%, 100% 100%, 0% 100%);
+            margin-right: -10px; /* Extra overlap for angled edges */
+        }
+        /* Bottom Cut: Slice sa bottom-right */
+        .panel.bottom-cut {
+            clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%);
+            margin-right: -10px;
+        }
+
+        /* The Slider Container (Holds 2 images) */
+        .panel-slider {
+            width: 100%;
+            height: 200%; /* Double height for 2 images */
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bouncy slot effect */
+        }
+
+        /* Images inside slider */
+        .panel-slider img {
+            width: 100%;
+            height: 50%; /* Each image takes half the slider */
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.2);
+            display: block;
+        }
+
+        /* Color Overlays */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            mix-blend-mode: multiply;
+            opacity: var(--overlay-opacity);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .purple { background-color: #9b30ff; }
+        .green { background-color: #2ecc71; }
+        .red { background-color: #e74c3c; }
+        .yellow { background-color: #f1c40f; }
+        .blue { background-color: #3498db; }
+
+        /* ================= MATCHUP (DOOR) SECTION ================= */
+        #matchup-section {
+            position: absolute;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .match-container {
+            width: 98%;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 10px;
+            background: #000;
+            position: relative;
+        }
+
+        .match-row {
+            display: flex;
+            width: 100%;
+            height: 48%;
+            gap: 0;
+        }
+
+        .match-panel {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: #111;
+            z-index: 1;
+        }
+
+        .match-row.top .match-panel:nth-child(1) { clip-path: polygon(0 0, 93% 0, 100% 12%, 100% 100%, 0 100%); margin-right: -8px; }
+        .match-row.top .match-panel:nth-child(2) { clip-path: polygon(0 0, 100% 0, 100% 88%, 93% 100%, 0 100%); margin-right: -8px; }
+        .match-row.top .match-panel:nth-child(3) { clip-path: polygon(0 0, 93% 0, 100% 12%, 100% 100%, 0 100%); margin-right: -8px; }
+        .match-row.top .match-panel:nth-child(4) { clip-path: polygon(0 0, 100% 0, 100% 88%, 93% 100%, 0 100%); margin-right: -8px; }
+        .match-row.top .match-panel:nth-child(5) { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+
+        .match-row.bottom .match-panel:nth-child(1) { clip-path: polygon(0 0, 93% 0, 100% 12%, 100% 100%, 0 100%); margin-right: -8px; }
+        .match-row.bottom .match-panel:nth-child(2) { clip-path: polygon(0 0, 100% 0, 100% 88%, 93% 100%, 0 100%); margin-right: -8px; }
+        .match-row.bottom .match-panel:nth-child(3) { clip-path: polygon(0 0, 93% 0, 100% 12%, 100% 100%, 0 100%); margin-right: -8px; }
+        .match-row.bottom .match-panel:nth-child(4) { clip-path: polygon(0 0, 100% 0, 100% 88%, 93% 100%, 0 100%); margin-right: -8px; }
+        .match-row.bottom .match-panel:nth-child(5) { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+
+        .match-panel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.1);
+            display: block;
+        }
+
+        .vs-banner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #000;
+            padding: 10px 40px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 3px;
+            z-index: 5;
+            white-space: nowrap;
+            border: 2px solid #fff;
+        }
+
+        .vs-banner .team-blue { color: #3498db; }
+        .vs-banner .vs-text { margin: 0 15px; }
+        .vs-banner .team-red { color: #e74c3c; }
+
+        .match-doors {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        .match-doors .door {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: #0a0a0a;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid #fff;
+        }
+
+        .match-doors .door.upper {
+            top: 0;
+            transform: translateY(0);
+            border-bottom: none;
+        }
+
+        .match-doors .door.lower {
+            bottom: 0;
+            transform: translateY(0);
+            border-top: none;
+        }
+
+        .match-doors .door-content {
+            font-family: 'Anton', sans-serif;
+            font-size: 8vw;
+            color: #fff;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+        }
+
+        .match-doors .door.upper .door-content { margin-bottom: 50px; }
+        .match-doors .door.lower .door-content { margin-top: 50px; }
+
+        #matchup-section.is-open .match-doors .door.upper { transform: translateY(-100%); }
+        #matchup-section.is-open .match-doors .door.lower { transform: translateY(100%); }
+
+        /* Controls (Next/Prev) */
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            z-index: 200;
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-nav {
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: #222;
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .btn-nav:hover { background: white; color: black; }
+
+        /* ANIMATION LOGIC CLASSES */
+        
+        /* DEFAULT STATE (Team Blue is visible) */
+        /* Odd Panels (1,3,5): Structure is [Blue, Red]. Default is Top (Blue). */
+        /* Even Panels (2,4): Structure is [Red, Blue]. Default is Bottom (Blue). */
+        
+        .panel-slider.state-default-odd { transform: translateY(0); } /* Shows Blue */
+        .panel-slider.state-default-even { transform: translateY(-50%); } /* Shows Blue */
+
+        /* SWITCHED STATE (Team Red is visible) */
+        /* Odd Panels: Move Up to show Red */
+        .panel-slider.state-switched-odd { transform: translateY(-50%); } 
+        /* Even Panels: Move Down (to 0) to show Red */
+        .panel-slider.state-switched-even { transform: translateY(0); }
+
+    </style>
+</head>
+<body>
+
+    <!-- SECTION 1: SETUP / UPLOAD -->
+    <div id="setup-section">
+        <h1>🔥 Manga Panel Maker 🔥</h1>
+        <div class="teams-container">
+            <!-- Team Blue Inputs -->
+            <div class="team-inputs blue">
+                <h2>Team Blue</h2>
+                <div class="input-group">
+                    <label>Team Name</label>
+                    <input type="text" id="name-blue" value="BLUE TEAM">
+                </div>
+                <div class="input-group"><label>Photo 1</label><input type="file" id="b1" accept="image/*"></div>
+                <div class="input-group"><label>Photo 2</label><input type="file" id="b2" accept="image/*"></div>
+                <div class="input-group"><label>Photo 3</label><input type="file" id="b3" accept="image/*"></div>
+                <div class="input-group"><label>Photo 4</label><input type="file" id="b4" accept="image/*"></div>
+                <div class="input-group"><label>Photo 5</label><input type="file" id="b5" accept="image/*"></div>
+            </div>
+
+            <!-- Team Red Inputs -->
+            <div class="team-inputs red">
+                <h2>Team Red</h2>
+                <div class="input-group">
+                    <label>Team Name</label>
+                    <input type="text" id="name-red" value="RED TEAM">
+                </div>
+                <div class="input-group"><label>Photo 1</label><input type="file" id="r1" accept="image/*"></div>
+                <div class="input-group"><label>Photo 2</label><input type="file" id="r2" accept="image/*"></div>
+                <div class="input-group"><label>Photo 3</label><input type="file" id="r3" accept="image/*"></div>
+                <div class="input-group"><label>Photo 4</label><input type="file" id="r4" accept="image/*"></div>
+                <div class="input-group"><label>Photo 5</label><input type="file" id="r5" accept="image/*"></div>
+            </div>
+        </div>
+        <button class="btn-start" onclick="startPresentation()">START PRESENTATION</button>
+    </div>
+
+    <!-- SECTION 2: PRESENTATION SCREEN -->
+    <div id="presentation-section">
+        
+        <div id="team-name-display" class="name-blue">BLUE TEAM</div>
+
+        <div class="comic-strip">
+            <!-- Panel 1: Purple (Top Cut) -->
+            <div class="panel top-cut">
+                <div class="panel-slider state-default-odd" id="slider1">
+                    <img id="img1-blue" src="" alt="">
+                    <img id="img1-red" src="" alt="">
+                </div>
+                <div class="overlay purple"></div>
+            </div>
+
+            <!-- Panel 2: Green (Bottom Cut) -->
+            <div class="panel bottom-cut">
+                <div class="panel-slider state-default-even" id="slider2">
+                    <img id="img2-red" src="" alt="">
+                    <img id="img2-blue" src="" alt="">
+                </div>
+                <div class="overlay green"></div>
+            </div>
+
+            <!-- Panel 3: Red (Top Cut) -->
+            <div class="panel top-cut">
+                <div class="panel-slider state-default-odd" id="slider3">
+                    <img id="img3-blue" src="" alt="">
+                    <img id="img3-red" src="" alt="">
+                </div>
+                <div class="overlay red"></div>
+            </div>
+
+            <!-- Panel 4: Yellow (Bottom Cut) -->
+            <div class="panel bottom-cut">
+                <div class="panel-slider state-default-even" id="slider4">
+                    <img id="img4-red" src="" alt="">
+                    <img id="img4-blue" src="" alt="">
+                </div>
+                <div class="overlay yellow"></div>
+            </div>
+
+            <!-- Panel 5: Blue (Top Cut) -->
+            <div class="panel top-cut">
+                <div class="panel-slider state-default-odd" id="slider5">
+                    <img id="img5-blue" src="" alt="">
+                    <img id="img5-red" src="" alt="">
+                </div>
+                <div class="overlay blue"></div>
+            </div>
+        </div>
+
+        <div id="matchup-section">
+            <div class="match-container">
+                <div class="match-row top">
+                    <div class="match-panel"><img id="match-b1" src="" alt=""><div class="overlay purple"></div></div>
+                    <div class="match-panel"><img id="match-b2" src="" alt=""><div class="overlay green"></div></div>
+                    <div class="match-panel"><img id="match-b3" src="" alt=""><div class="overlay red"></div></div>
+                    <div class="match-panel"><img id="match-b4" src="" alt=""><div class="overlay yellow"></div></div>
+                    <div class="match-panel"><img id="match-b5" src="" alt=""><div class="overlay blue"></div></div>
+                </div>
+
+                <div class="vs-banner">
+                    <span class="team-blue" id="match-team-blue">BLUE TEAM</span>
+                    <span class="vs-text">VS</span>
+                    <span class="team-red" id="match-team-red">RED TEAM</span>
+                </div>
+
+                <div class="match-row bottom">
+                    <div class="match-panel"><img id="match-r1" src="" alt=""><div class="overlay purple"></div></div>
+                    <div class="match-panel"><img id="match-r2" src="" alt=""><div class="overlay green"></div></div>
+                    <div class="match-panel"><img id="match-r3" src="" alt=""><div class="overlay red"></div></div>
+                    <div class="match-panel"><img id="match-r4" src="" alt=""><div class="overlay yellow"></div></div>
+                    <div class="match-panel"><img id="match-r5" src="" alt=""><div class="overlay blue"></div></div>
+                </div>
+            </div>
+
+            <div class="match-doors" id="match-doors">
+                <div class="door upper">
+                    <div class="door-content" id="door-team-blue">TEAM BLUE</div>
+                </div>
+                <div class="door lower">
+                    <div class="door-content" id="door-team-red">TEAM RED</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-nav" onclick="changeState('prev')">⏪ Previous</button>
+            <button class="btn-nav" onclick="changeState('next')">Next ⏩</button>
+        </div>
+    </div>
+
+    <script>
+        let currentState = 0; // 0: blue, 1: red, 2: match
+
+        // Helper to read file and set image src
+        function previewFile(inputId, imgIds) {
+            const input = document.getElementById(inputId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imgIds.forEach(id => {
+                        const img = document.getElementById(id);
+                        if (img) img.src = e.target.result;
+                    });
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function startPresentation() {
+            // Map inputs to image IDs
+            // Panel 1
+            previewFile('b1', ['img1-blue', 'match-b1']);
+            previewFile('r1', ['img1-red', 'match-r1']);
+            // Panel 2
+            previewFile('b2', ['img2-blue', 'match-b2']);
+            previewFile('r2', ['img2-red', 'match-r2']);
+            // Panel 3
+            previewFile('b3', ['img3-blue', 'match-b3']);
+            previewFile('r3', ['img3-red', 'match-r3']);
+            // Panel 4
+            previewFile('b4', ['img4-blue', 'match-b4']);
+            previewFile('r4', ['img4-red', 'match-r4']);
+            // Panel 5
+            previewFile('b5', ['img5-blue', 'match-b5']);
+            previewFile('r5', ['img5-red', 'match-r5']);
+
+            // Update Team Names
+            const blueName = document.getElementById('name-blue').value || "BLUE TEAM";
+            const redName = document.getElementById('name-red').value || "RED TEAM";
+            document.getElementById('team-name-display').innerText = blueName;
+            document.getElementById('match-team-blue').innerText = blueName;
+            document.getElementById('match-team-red').innerText = redName;
+            document.getElementById('door-team-blue').innerText = blueName;
+            document.getElementById('door-team-red').innerText = redName;
+
+            // Switch Views
+            document.getElementById('setup-section').style.display = 'none';
+            document.getElementById('presentation-section').style.display = 'flex';
+            currentState = 0;
+            applyState();
+        }
+
+        function applyState() {
+            const display = document.getElementById('team-name-display');
+            const matchup = document.getElementById('matchup-section');
+            const blueName = document.getElementById('name-blue').value || "BLUE TEAM";
+            const redName = document.getElementById('name-red').value || "RED TEAM";
+
+            if (currentState === 0) {
+                matchup.style.display = 'none';
+                matchup.classList.remove('is-open');
+                display.style.opacity = '1';
+                display.innerText = blueName;
+                display.className = 'name-blue';
+
+                document.getElementById('slider1').className = 'panel-slider state-default-odd';
+                document.getElementById('slider3').className = 'panel-slider state-default-odd';
+                document.getElementById('slider5').className = 'panel-slider state-default-odd';
+                document.getElementById('slider2').className = 'panel-slider state-default-even';
+                document.getElementById('slider4').className = 'panel-slider state-default-even';
+                return;
+            }
+
+            if (currentState === 1) {
+                matchup.style.display = 'none';
+                matchup.classList.remove('is-open');
+                display.style.opacity = '1';
+                display.innerText = redName;
+                display.className = 'name-red';
+
+                document.getElementById('slider1').className = 'panel-slider state-switched-odd';
+                document.getElementById('slider3').className = 'panel-slider state-switched-odd';
+                document.getElementById('slider5').className = 'panel-slider state-switched-odd';
+                document.getElementById('slider2').className = 'panel-slider state-switched-even';
+                document.getElementById('slider4').className = 'panel-slider state-switched-even';
+                return;
+            }
+
+            matchup.style.display = 'flex';
+            matchup.classList.remove('is-open');
+            display.style.opacity = '0';
+
+            requestAnimationFrame(() => {
+                matchup.classList.add('is-open');
+            });
+        }
+
+        function changeState(direction) {
+            if (direction === 'next') {
+                currentState = (currentState + 1) % 3;
+            } else {
+                currentState = (currentState + 2) % 3;
+            }
+            applyState();
+        }
+    </script>
+</body>
+</html>

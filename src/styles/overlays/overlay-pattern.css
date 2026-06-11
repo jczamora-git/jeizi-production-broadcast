@@ -1,0 +1,47 @@
+.overlay-pattern-page {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  position: relative;
+}
+
+.overlay-pattern-viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.overlay-pattern-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+  animation: overlayPatternScrollUp 18s linear infinite;
+}
+
+.overlay-pattern-image {
+  width: 100%;
+  height: 50%;
+  opacity: 0.20;
+  object-fit: cover;
+  object-position: center;
+  flex-shrink: 0;
+  user-select: none;
+  pointer-events: none;
+  display: block;
+}
+
+@keyframes overlayPatternScrollUp {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50%);
+  }
+}

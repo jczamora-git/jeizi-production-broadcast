@@ -1,0 +1,86 @@
+.draft-blue-name {
+  left: 120px;
+  top: 60px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.draft-red-name {
+  right: 120px;
+  top: 60px;
+  font-size: 32px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.draft-score {
+  left: 50%;
+  top: 60px;
+  transform: translateX(-50%);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.draft-blue-logo {
+  position: absolute;
+  left: 120px;
+  top: 120px;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  z-index: 2;
+}
+
+.draft-red-logo {
+  position: absolute;
+  right: 120px;
+  top: 120px;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  z-index: 2;
+}
+
+.draft-column {
+  position: absolute;
+  top: 280px;
+  display: grid;
+  gap: 16px;
+  z-index: 2;
+}
+
+.draft-blue-column {
+  left: 80px;
+}
+
+.draft-red-column {
+  right: 80px;
+  justify-items: end;
+}
+
+.draft-action {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+}
+
+.draft-action img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.draft-action-placeholder {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.draft-action-label {
+  font-size: 14px;
+}

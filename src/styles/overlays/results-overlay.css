@@ -1,0 +1,83 @@
+@font-face {
+  font-family: "CMO Galactic";
+  src: url("../../game_fonts/cmo_s1/GALACTIC VANGUARDIAN NCV.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "CMO Gunsport";
+  src: url("../../game_fonts/cmo_s1/Gunsport-m2J0a.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.results-team-shortname {
+  position: absolute;
+  top: 20px;
+  z-index: 60;
+  font-family: "CMO Gunsport", Arial, sans-serif;
+  font-size: 200px;
+  line-height: 0.9;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.results-status {
+  position: absolute;
+  z-index: 61;
+  font-family: "CMO Galactic", Arial, sans-serif;
+  font-size: 60px;
+  line-height: 1;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.results-score-indicators {
+  position: absolute;
+  z-index: 62;
+  display: flex;
+  pointer-events: none;
+}
+
+.results-blue-team-shortname {
+  left: 70px;
+  text-align: left;
+}
+
+.results-blue-status {
+  left: 340px;
+  top: 52px;
+  text-align: left;
+}
+
+.results-blue-indicators {
+  left: 340px;
+  top: 126px;
+  justify-content: flex-start;
+}
+
+.results-red-team-shortname {
+  right: 70px;
+  text-align: right;
+}
+
+.results-red-status {
+  right: 320px;
+  top: 52px;
+  text-align: right;
+}
+
+.results-red-indicators {
+  right: 320px;
+  top: 126px;
+  justify-content: flex-end;
+}

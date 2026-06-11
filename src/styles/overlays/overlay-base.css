@@ -1,0 +1,109 @@
+@font-face {
+  font-family: "Xeroda";
+  src: url("../../cmo_s1/XerodaRegular-p7dwr.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gunsport";
+  src: url("../../cmo_s1/Gunsport-m2J0a.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Galactic Vanguardian";
+  src: url("../../cmo_s1/GALACTIC VANGUARDIAN NCV.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --overlay-font-xeroda: "Xeroda", Arial, sans-serif;
+  --overlay-font-gunsport: "Gunsport", Arial, sans-serif;
+  --overlay-font-galactic: "Galactic Vanguardian", Arial, sans-serif;
+}
+
+.overlay-page,
+.overlay-root,
+.overlay-stage {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+.overlay-font-xeroda {
+  font-family: var(--overlay-font-xeroda);
+}
+
+.overlay-font-gunsport {
+  font-family: var(--overlay-font-gunsport);
+}
+
+.overlay-font-galactic {
+  font-family: var(--overlay-font-galactic);
+}
+
+html.is-overlay-route,
+body.is-overlay-route,
+body.is-overlay-route #root {
+  width: 1920px;
+  height: 1080px;
+  margin: 0;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+.overlay-canvas {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+.overlay-bg {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  object-fit: contain;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.overlay-frame {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+
+.overlay-data-layer {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.overlay-text {
+  position: absolute;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 3;
+}

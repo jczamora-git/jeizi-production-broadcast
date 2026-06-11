@@ -1,0 +1,16 @@
+.map-change-name {
+  left: 80px;
+  top: 80px;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.map-change-icon {
+  position: absolute;
+  left: 80px;
+  top: 150px;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  z-index: 2;
+}

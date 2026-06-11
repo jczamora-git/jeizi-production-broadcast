@@ -1,0 +1,303 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;700&display=swap");
+
+:root {
+  --loading-v2-blue: #3498db;
+  --loading-v2-red: #e74c3c;
+  --loading-v2-ink: #0a0a0a;
+  --loading-v2-panel-border: #000000;
+  --loading-v2-overlay-opacity: 0.6;
+}
+
+.loading-v2 {
+  font-family: "Roboto", sans-serif;
+  color: #ffffff;
+}
+
+.loading-v2-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 15% 20%, rgba(52, 152, 219, 0.18), transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(231, 76, 60, 0.16), transparent 45%),
+    linear-gradient(135deg, #000000 0%, #0f0f0f 50%, #000000 100%);
+  z-index: 0;
+}
+
+.loading-v2-stage {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.loading-v2-team-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Anton", sans-serif;
+  font-size: 6rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.loading-v2-team-display.is-active {
+  opacity: 1;
+}
+
+.loading-v2-team-blue,
+.loading-v2-team-red {
+  color: #ffffff;
+}
+
+.loading-v2-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+}
+
+.loading-v2-screen.is-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.loading-v2-strip {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  box-sizing: border-box;
+}
+
+.loading-v2-panel {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #111111;
+  border: 4px solid var(--loading-v2-panel-border);
+  border-right: none;
+  margin-right: -4px;
+  transform: translateY(0);
+}
+
+.loading-v2-panel:last-child {
+  border-right: 4px solid var(--loading-v2-panel-border);
+  margin-right: 0;
+}
+
+.loading-v2-panel-top {
+  clip-path: polygon(0% 0%, 85% 0%, 100% 15%, 100% 100%, 0% 100%);
+  margin-right: -10px;
+}
+
+.loading-v2-panel-bottom {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%);
+  margin-right: -10px;
+}
+
+.loading-v2-panel img,
+.loading-v2-panel-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.2);
+  display: block;
+  background: #111111;
+}
+
+.loading-v2-screen-blue.is-active .loading-v2-panel,
+.loading-v2-screen-red.is-active .loading-v2-panel {
+  animation-duration: 0.9s;
+  animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  animation-fill-mode: both;
+}
+
+.loading-v2-screen-blue.is-active .loading-v2-panel:nth-child(odd),
+.loading-v2-screen-red.is-active .loading-v2-panel:nth-child(odd) {
+  animation-name: loading-v2-slot-down;
+}
+
+.loading-v2-screen-blue.is-active .loading-v2-panel:nth-child(even),
+.loading-v2-screen-red.is-active .loading-v2-panel:nth-child(even) {
+  animation-name: loading-v2-slot-up;
+}
+
+.loading-v2-screen-blue.is-active .loading-v2-panel:nth-child(2),
+.loading-v2-screen-red.is-active .loading-v2-panel:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.loading-v2-screen-blue.is-active .loading-v2-panel:nth-child(3),
+.loading-v2-screen-red.is-active .loading-v2-panel:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+.loading-v2-screen-blue.is-active .loading-v2-panel:nth-child(4),
+.loading-v2-screen-red.is-active .loading-v2-panel:nth-child(4) {
+  animation-delay: 0.24s;
+}
+
+.loading-v2-screen-blue.is-active .loading-v2-panel:nth-child(5),
+.loading-v2-screen-red.is-active .loading-v2-panel:nth-child(5) {
+  animation-delay: 0.32s;
+}
+
+.loading-v2-panel-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Anton", sans-serif;
+  font-size: 2rem;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.loading-v2-panel-overlay {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: multiply;
+  opacity: var(--loading-v2-overlay-opacity);
+  pointer-events: none;
+}
+
+.loading-v2-red {
+  background-color: #e74c3c;
+}
+
+.loading-v2-blue {
+  background-color: #3498db;
+}
+
+.loading-v2-matchup-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.loading-v2-match-row {
+  display: flex;
+  width: 100%;
+  height: 48%;
+  transform: translateY(0);
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loading-v2-match-panel {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #111111;
+}
+
+.loading-v2-match-panel img,
+.loading-v2-match-panel .loading-v2-panel-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.1);
+  display: block;
+}
+
+.loading-v2-vs-banner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #000000;
+  border: 2px solid #ffffff;
+  padding: 10px 40px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 5;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.2s;
+}
+
+.loading-v2-matchup-stage.is-open .loading-v2-match-row:first-child {
+  transform: translateY(-6%);
+}
+
+.loading-v2-matchup-stage.is-open .loading-v2-match-row:last-child {
+  transform: translateY(6%);
+}
+
+.loading-v2-matchup-stage.is-open .loading-v2-vs-banner {
+  opacity: 1;
+}
+
+.loading-v2-vs-team-blue,
+.loading-v2-vs-team-red {
+  color: #ffffff;
+}
+
+.loading-v2-vs-text {
+  color: #ffffff;
+}
+
+@keyframes loading-v2-slot-down {
+  0% {
+    transform: translateY(40%);
+    opacity: 0.2;
+  }
+  70% {
+    transform: translateY(-6%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes loading-v2-slot-up {
+  0% {
+    transform: translateY(-40%);
+    opacity: 0.2;
+  }
+  70% {
+    transform: translateY(6%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1400px) {
+  .loading-v2-team-display {
+    font-size: 3.6rem;
+  }
+
+  .loading-v2-strip,
+  .loading-v2-matchup-stage {
+    height: 100%;
+  }
+
+  .loading-v2-vs-banner {
+    font-size: 1.6rem;
+  }
+}

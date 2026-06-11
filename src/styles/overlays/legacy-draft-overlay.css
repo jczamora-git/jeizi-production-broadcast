@@ -1,0 +1,240 @@
+.legacy-draft-overlay {
+  background: transparent !important;
+}
+
+@font-face {
+  font-family: "CMO Galactic";
+  src: url("../../game_fonts/cmo_s1/GALACTIC VANGUARDIAN NCV.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "CMO Xeroda";
+  src: url("../../game_fonts/cmo_s1/XerodaRegular-p7dwr.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.legacy-draft-overlay .overlay-frame {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+
+.legacy-draft-overlay .overlay-data-layer {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.legacy-draft-blue-team-logo-mask,
+.legacy-draft-red-team-logo-mask {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 10, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+  padding: 0;
+  pointer-events: none;
+}
+
+.legacy-draft-blue-team-logo-mask {
+  left: 601px;
+  top: 445px;
+}
+
+.legacy-draft-red-team-logo-mask {
+  right: 601px;
+  top: 445px;
+}
+
+.legacy-draft-blue-team-logo,
+.legacy-draft-red-team-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+}
+
+.legacy-draft-blue-team-name {
+  position: absolute;
+  left: 30px;
+  top: 87px;
+  width: 420px;
+  text-align: left;
+  font-size: 34px;
+  font-weight: 700;
+  font-family: "CMO Xeroda", Arial, sans-serif;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.legacy-draft-red-team-name {
+  position: absolute;
+  right: 30px;
+  top: 87px;
+  width: 420px;
+  text-align: right;
+  font-size: 34px;
+  font-weight: 700;
+  font-family: "CMO Xeroda", Arial, sans-serif;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.legacy-draft-match-title {
+  position: absolute;
+  left: 50%;
+  top: 480px;
+  transform: translateX(-50%);
+  width: 420px;
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  font-family: "CMO Galactic", Arial, sans-serif;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.legacy-draft-match-mode {
+  position: absolute;
+  left: 50%;
+  top: 670px;
+  transform: translateX(-50%);
+  width: 300px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: "CMO Galactic", Arial, sans-serif;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.legacy-draft-game-no {
+  position: absolute;
+  left: 50%;
+  top: 690px;
+  transform: translateX(-50%);
+  width: 220px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 600;
+  font-family: "CMO Galactic", Arial, sans-serif;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.legacy-draft-map-name {
+  position: absolute;
+  left: 50%;
+  top: 770px;
+  transform: translateX(-50%);
+  z-index: 60;
+  width: 420px;
+  text-align: center;
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 700;
+  font-family: "CMO Xeroda", Arial, sans-serif;
+  letter-spacing: 1px;
+  color: #ff5400;
+  text-transform: uppercase;
+  /* text-shadow: 0 4px 10px rgba(0, 0, 0, 0.65); */
+  pointer-events: none;
+}
+
+.legacy-draft-map-image,
+.legacy-draft-map-image-slot {
+  position: absolute;
+  left: 50%;
+  top: 820px;
+  transform: translateX(-50%);
+  z-index: 59;
+  width: 330px;
+  height: 160px;
+  object-fit: cover;
+  object-position: center;
+  border: 4px solid #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+  background: rgba(10, 10, 10, 0.85);
+  pointer-events: none;
+}
+
+.legacy-draft-map-image-slot {
+  overflow: hidden;
+  filter: grayscale(100%);
+  padding: 0;
+}
+
+.legacy-draft-map-slot-reel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  animation: legacyDraftMapSlotRoll 1.2s linear infinite;
+}
+
+.legacy-draft-map-slot-image {
+  width: 100%;
+  height: 110px;
+  flex: 0 0 110px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+@keyframes legacyDraftMapSlotRoll {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.legacy-draft-blue-indicators {
+  position: absolute;
+  left: 653px;
+  top: 653px;
+}
+
+.legacy-draft-red-indicators {
+  position: absolute;
+  right: 653px;
+  top: 653px;
+}
+
+.legacy-draft-placeholder {
+  position: absolute;
+  left: 80px;
+  top: 60px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+}

@@ -1,0 +1,66 @@
+.victory-overlay-page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+
+  
+}
+
+.victory-overlay-page .victory-line {
+  position: absolute;
+  margin: 0;
+  font-family: var(--overlay-font-xeroda);
+  white-space: pre-wrap;
+  word-break: break-word;
+  pointer-events: none;
+}
+
+.victory-overlay-page .victory-line-1 {
+  top: var(--victory-line1-top);
+  left: var(--victory-line1-left);
+  width: var(--victory-line1-width);
+  text-align: var(--victory-line1-text-align);
+  font-size: var(--victory-line1-font-size);
+  line-height: var(--victory-line1-line-height);
+  letter-spacing: var(--victory-line1-letter-spacing);
+  color: var(--victory-line1-color);
+  text-transform: var(--victory-line1-text-transform);
+  font-weight: var(--victory-line1-font-weight);
+  opacity: var(--victory-line1-opacity);
+  text-shadow: var(--victory-line1-text-shadow);
+  z-index: var(--victory-line1-z-index);
+}
+
+.victory-overlay-page .victory-line-2 {
+  top: var(--victory-line2-top);
+  left: var(--victory-line2-left);
+  width: var(--victory-line2-width);
+  text-align: var(--victory-line2-text-align);
+  font-size: var(--victory-line2-font-size);
+  line-height: var(--victory-line2-line-height);
+  letter-spacing: var(--victory-line2-letter-spacing);
+  color: var(--victory-line2-color);
+  text-transform: var(--victory-line2-text-transform);
+  font-weight: var(--victory-line2-font-weight);
+  opacity: var(--victory-line2-opacity);
+  text-shadow: var(--victory-line2-text-shadow);
+  z-index: var(--victory-line2-z-index);
+}
+
+.victory-overlay-page .victory-line-3 {
+  top: var(--victory-line3-top);
+  left: var(--victory-line3-left);
+  width: var(--victory-line3-width);
+  text-align: var(--victory-line3-text-align);
+  font-size: var(--victory-line3-font-size);
+  line-height: var(--victory-line3-line-height);
+  letter-spacing: var(--victory-line3-letter-spacing);
+  color: var(--victory-line3-color);
+  text-transform: var(--victory-line3-text-transform);
+  font-weight: var(--victory-line3-font-weight);
+  opacity: var(--victory-line3-opacity);
+  text-shadow: var(--victory-line3-text-shadow);
+  z-index: var(--victory-line3-z-index);
+}
